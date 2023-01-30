@@ -32,5 +32,8 @@ class Settings
 	{
 		$db = Db::getConnection();
 		$db->updateOrInsert('model_settings', ['k' => $k], ['v' => json_encode($v)]);
+
+		$cache = Cache::getCacheAdapter();
+		$cache->deleteItem('model.settings.' . $db->getName());
 	}
 }
