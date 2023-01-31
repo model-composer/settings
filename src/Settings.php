@@ -17,7 +17,7 @@ class Settings
 
 			if (count($settings) === 0 and $db->getParser()->tableExists('main_settings')) { // Migration from ModEl 3, temporary
 				foreach ($db->selectAll('main_settings') as $row) {
-					$db->insert('model_settings', ['k' => $row['k']], ['v' => json_encode($row['v'])]);
+					$db->insert('model_settings', ['k' => $row['k'], 'v' => json_encode($row['v'])]);
 					$settings[$row['k']] = $row['v'];
 				}
 			}
