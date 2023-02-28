@@ -12,11 +12,11 @@
         "psr-4": {"Model\\Settings\\": "src/"}
     },
     "require": {
-        "model/config": "^0.7.0",
-        "model/cache": "^0.5.1"
+        "model/config": "^0.7.0"
     },
     "suggest": {
         "model/db": "In case you want to use db as storage",
+        "model/cache": "In case you want to use db as storage",
         "model/redis": "In case you want to use redis as storage"
     }
 }
