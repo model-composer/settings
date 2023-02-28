@@ -11,7 +11,8 @@ class ConfigProvider extends AbstractConfigProvider
 				'version' => '0.1.0',
 				'migration' => function (array $config, string $env) {
 					return [
-						'storage' => 'db',
+						'storage' => 'file',
+						'path' => 'app-data/settings.php',
 					];
 				},
 			],
