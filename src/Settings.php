@@ -6,7 +6,7 @@ class Settings
 {
 	private static array $settings;
 
-	public static function get(string $k): mixed
+	public static function getAll(): array
 	{
 		if (!isset(self::$settings)) {
 			$config = Config::get('settings');
@@ -54,12 +54,27 @@ class Settings
 			}
 		}
 
-		return self::$settings[$k] ?? null;
+		return self::$settings;
+	}
+
+	public static function get(string $k): mixed
+	{
+		$settings = self::getAll();
+		return $settings[$k] ?? null;
 	}
 
 	public static function set(string $k, mixed $v): void
 	{
+		self::getAll(); // Genero cache
+
 		$config = Config::get('settings');
+		if ($config['validation'] !== null) {
+			if (isset($config[$k])) {
+				// TODO: validation
+			} else {
+				throw new \Exception($k . ' is not a supported setting', 403);
+			}
+		}
 
 		self::$settings[$k] = $v;
 
