@@ -6,14 +6,14 @@ class Settings
 {
 	private static array $settings;
 
-	public static function getAll(): array
+	public static function getAll(array $options = []): array
 	{
 		if (!isset(self::$settings)) {
 			$config = Config::get('settings');
 
 			switch ($config['storage']) {
 				case 'db':
-					$db = \Model\Db\Db::getConnection();
+					$db = $options['db'] ?? \Model\Db\Db::getConnection();
 					$cache = \Model\Cache\Cache::getCacheAdapter();
 
 					self::$settings = $cache->get('model.settings.' . $db->getName(), function (\Symfony\Contracts\Cache\ItemInterface $item) use ($db) {
@@ -57,15 +57,15 @@ class Settings
 		return self::$settings;
 	}
 
-	public static function get(string $k): mixed
+	public static function get(string $k, array $options = []): mixed
 	{
-		$settings = self::getAll();
+		$settings = self::getAll($options);
 		return $settings[$k] ?? null;
 	}
 
-	public static function set(string $k, mixed $v): void
+	public static function set(string $k, mixed $v, array $options = []): void
 	{
-		self::getAll(); // Genero cache
+		self::getAll($options); // Genero cache
 
 		$config = Config::get('settings');
 		if ($config['validation'] !== null) {
@@ -80,7 +80,7 @@ class Settings
 
 		switch ($config['storage']) {
 			case 'db':
-				$db = \Model\Db\Db::getConnection();
+				$db = $options['db'] ?? \Model\Db\Db::getConnection();
 				$db->updateOrInsert('model_settings', ['k' => $k], ['v' => json_encode($v)]);
 
 				$cache = \Model\Cache\Cache::getCacheAdapter();
