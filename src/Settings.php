@@ -69,7 +69,7 @@ class Settings
 
 		$config = Config::get('settings');
 		if ($config['validation'] !== null) {
-			if (isset($config[$k])) {
+			if (isset($config['validation'][$k])) {
 				// TODO: validation
 			} else {
 				throw new \Exception($k . ' is not a supported setting', 403);
